@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./post/Post";
 
+import db from "../../firebase";
+
 const Posts = () => {
-	const img = "/avatar_hat.jpg";
-	const name = "chinedu okosi";
-	const userName = "@okosival";
-	const timestamp = "1601493943737";
-	const message =
-		"whatsup my people. how una dey, hows home, how papa, how mama, how siste";
+	// eslint-disable-next-line no-unused-vars
+
+	const [postsData, setPostsData] = useState([]);
+
+	useEffect(() => {
+		db.collection("posts")
+			.orderBy("timestamp", "desc")
+			.onSnapshot((snapshot) =>
+				setPostsData(
+					snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+				)
+			);
+	}, []);
 
 	return (
-		<div className="h-full w-full">
-			<Post
-				profileImg={img}
-				name={name}
-				username={userName}
-				timestamp={timestamp}
-				message={message}
-			/>
+		<div className="h-full w-full mt-4 border border-gray-800 rounded overflow-y-scroll scrollbar-hide">
+			{postsData.map((post) => (
+				<Post
+					key={post.id}
+					profilePic={post.data.profilePic}
+					message={post.data.message}
+					timestamp={post.data.timestamp}
+					username={post.data.username}
+					image={post.data.image}
+				/>
+			))}
 		</div>
 	);
 };

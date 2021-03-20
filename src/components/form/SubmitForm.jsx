@@ -1,36 +1,141 @@
-import React, { useState } from "react";
-import { AiOutlineSend } from "react-icons/ai";
-
-import FileUpload from "./FileUpload";
+/* eslint-disable no-unused-vars */
+import React, { useContext, useState } from "react";
+import { GoFileMedia } from "react-icons/go";
+import TextareaAutosize from "react-textarea-autosize";
+import { ModalContext } from "../../contextProviders/ModalStateProvider";
+import firebase from "firebase";
+import db from "../../firebase";
+import { storageRef } from "../../firebase";
+import { StorageContext } from "../../contextProviders/StorageProvider";
+import { AuthContext } from "../../contextProviders/Auth";
 
 const SubmitForm = () => {
-	const [postData, setPostData] = useState("");
+	const [input, setInput] = useState("");
+	const [ImageURL, setImageURL] = useState(null);
+	const { currentUser } = useContext(AuthContext);
+	const { showModal, setShowModal } = useContext(ModalContext);
+	const { image, setImage } = useContext(StorageContext);
 
-	const handleSubmit = () => {
-		console.log("submitting");
+	const hiddenFileInput = React.useRef(null);
+
+	console.log(currentUser);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		db.collection("posts").add({
+			message: input,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+			profilePic: currentUser.photoURL,
+			username: currentUser.displayName,
+			image: ImageURL,
+		});
+
+		setInput("");
+	};
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		hiddenFileInput.current.click();
+	};
+
+	const handleFileChange = async (e) => {
+		const file = e.target.files[0];
+		const fileRef = storageRef.child(file.name);
+		await fileRef.put(file);
+		setImageURL(await fileRef.getDownloadURL());
 	};
 
 	return (
-		<div className="lg:absolute lg:inset-x-5 lg:bottom-4 lg:border lg:border-gray-600 lg:h-24 w-8/12 lg:rounded-md lg:flex lg:flex-col justify-center">
-			<form>
-				<div className="border-b border-gray-600 flex flex-col justify-self-center h-8">
-					<input
-						className="pl-4 focus:outline-none bg-black"
-						type="text"
-						name="creator"
-						placeholder="what's on your mind?"
-						value={postData.creator}
-						onChange={(e) => setPostData(e.target.value)}
+		<>
+			<form onSubmit={handleSubmit}>
+				<div className="hidden border border-gray-700 h-auto mt-20 rounded-md lg:flex w-full">
+					<img
+						className="object-cover rounded-full w-14 h-14 ml-4 mt-3"
+						src={currentUser.photoURL}
+						alt=""
 					/>
-				</div>
-				<div className="flex justify-between items-center pt-2 px-4">
-					<FileUpload />
-					<button OnClick={handleSubmit} type="submit">
-						<AiOutlineSend size={24} className="text-purple-500" />
-					</button>
+					<div className="flex flex-col mt-7 pl-2 w-full relative">
+						<div>
+							<TextareaAutosize
+								className="pl-2 pr-2 w-full h-auto focus:outline-none resize-none bg-black pb-7"
+								autoFocus
+								autoComplete="true"
+								placeholder="what's on your mind?"
+								name="creator"
+								value={input}
+								onChange={(e) => setInput(e.target.value)}
+							/>
+						</div>
+
+						<div className="flex pl-2 justify-between mb-4 h-auto">
+							<button className="focus:outline-none" onClick={handleClick}>
+								<GoFileMedia size={25} className="text-purple-500" />
+							</button>
+
+							<input
+								className="invisible"
+								type="file"
+								ref={hiddenFileInput}
+								onChange={handleFileChange}
+							/>
+							<button
+								className="rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200"
+								type="submit"
+							>
+								POST
+							</button>
+						</div>
+					</div>
 				</div>
 			</form>
-		</div>
+			{/* {showModal ? (
+				<>
+					<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+						<form className="hidden mt-4 lg:flex w-4/12 rounded border h-auto">
+							<img
+								className="object-cover rounded-full w-14 h-14 ml-4 mt-3"
+								src="/avatar_hat.jpg"
+								alt=""
+							/>
+							<div className="flex flex-col mt-7 pl-2 w-full relative">
+								<div>
+									<TextareaAutosize
+										className="pl-2 pr-2 w-full h-auto focus:outline-none resize-none bg-black pb-7"
+										autoFocus
+										name="creator"
+										placeholder="what's on your mind?"
+										value={postData.creator}
+										onChange={(e) => setPostData(e.target.value)}
+									/>
+								</div>
+
+								<div className="flex pl-2 justify-between mb-2 h-auto">
+									<button className="focus:outline-none" onClick={handleClick}>
+										<GoFileMedia size={25} className="text-purple-500" />
+									</button>
+
+									<input
+										className="invisible"
+										type="file"
+										ref={hiddenFileInput}
+										onChange={handleChange}
+									/>
+									<button
+										className="rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200"
+										OnClick={handleSubmit}
+										type="submit"
+									>
+										POST
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+				</>
+			) : null} */}
+		</>
 	);
 };
 

@@ -7,7 +7,8 @@ const FileUpload = () => {
 
 	const hiddenFileInput = React.useRef(null);
 
-	const handleClick = (event) => {
+	const handleClick = (e) => {
+		e.preventDefault();
 		hiddenFileInput.current.click();
 	};
 
@@ -17,9 +18,9 @@ const FileUpload = () => {
 		}
 	};
 	return (
-		<div>
+		<div className="mt-1 focus:outline-none">
 			<button onClick={handleClick}>
-				<GoFileMedia size={24} className="text-purple-500" />
+				<GoFileMedia size={20} className="text-purple-500" />
 			</button>
 
 			<input
