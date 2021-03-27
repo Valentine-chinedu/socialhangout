@@ -33,10 +33,16 @@ const Post = ({ profilePic, image, username, timestamp, message }) => {
 						""
 					)}
 
-					<div className="flex justify-between mt-4 pr-4">
-						<FaRegThumbsUp className="opacity-50" />
-						<FaRegCommentAlt className="opacity-50" />
-						<FiShare2 className="opacity-50" />
+					<div className="flex justify-around mt-4 pr-4">
+						<button>
+							<FaRegThumbsUp className="opacity-50" />
+						</button>
+						<button>
+							<FaRegCommentAlt className="opacity-50" />
+						</button>
+						<button>
+							<FiShare2 className="opacity-50" />
+						</button>
 					</div>
 				</div>
 			</div>

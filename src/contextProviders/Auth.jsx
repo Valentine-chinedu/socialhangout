@@ -15,7 +15,11 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 
 	if (pending) {
-		return <>Loading...</>;
+		return (
+			<div className="w-full h-screen flex justify-center items-center">
+				Loading...
+			</div>
+		);
 	}
 
 	return (

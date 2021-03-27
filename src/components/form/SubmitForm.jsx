@@ -2,23 +2,21 @@
 import React, { useContext, useState } from "react";
 import { GoFileMedia } from "react-icons/go";
 import TextareaAutosize from "react-textarea-autosize";
-import { ModalContext } from "../../contextProviders/ModalStateProvider";
 import firebase from "firebase";
 import db from "../../firebase";
 import { storageRef } from "../../firebase";
 import { StorageContext } from "../../contextProviders/StorageProvider";
 import { AuthContext } from "../../contextProviders/Auth";
+import ElegentReactTooltip from "elegant-react-tooltip";
 
 const SubmitForm = () => {
 	const [input, setInput] = useState("");
 	const [ImageURL, setImageURL] = useState(null);
 	const { currentUser } = useContext(AuthContext);
-	const { showModal, setShowModal } = useContext(ModalContext);
-	const { image, setImage } = useContext(StorageContext);
+
+	const { image, setImage } = useState();
 
 	const hiddenFileInput = React.useRef(null);
-
-	console.log(currentUser);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -70,7 +68,9 @@ const SubmitForm = () => {
 
 						<div className="flex pl-2 justify-between mb-4 h-auto">
 							<button className="focus:outline-none" onClick={handleClick}>
-								<GoFileMedia size={25} className="text-purple-500" />
+								<ElegentReactTooltip label="Upload media">
+									<GoFileMedia size={25} className="text-purple-500" />
+								</ElegentReactTooltip>
 							</button>
 
 							<input

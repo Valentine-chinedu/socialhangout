@@ -2,10 +2,10 @@ import React, { useState } from "react";
 export const StorageContext = React.createContext();
 
 const StorageProvider = (props) => {
-	const [image, setImage] = useState("");
+	const [bgphoto, setBgPhoto] = useState("");
 
 	return (
-		<StorageContext.Provider value={{ image, setImage }}>
+		<StorageContext.Provider value={{ bgphoto, setBgPhoto }}>
 			{props.children}
 		</StorageContext.Provider>
 	);

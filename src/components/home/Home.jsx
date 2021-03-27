@@ -7,10 +7,10 @@ import NavbarTop from "../navbar/NavbarTop";
 
 const Home = () => {
 	return (
-		<div className="relative h-full lg:flex justify-center w-full">
+		<div className=" theme-dark relative overflow-y-hidden md:flex justify-center w-full">
 			<NavbarTop />
 			<Navbar />
-			<div className="w-5/12 mr-8">
+			<div className="lg:w-5/12 mr-8">
 				<SubmitForm />
 				<Posts />
 			</div>

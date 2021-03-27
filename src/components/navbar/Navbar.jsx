@@ -5,7 +5,7 @@ import { IoMdPhotos } from "react-icons/io";
 
 const Navbar = () => {
 	return (
-		<div className=" mr-4 mt-12">
+		<div className=" pr-16 mt-20 ">
 			<div className="mb-8">
 				<button className="flex items-center hover:bg-purple-700 p-2 rounded-3xl">
 					<MdHome size={30} />
