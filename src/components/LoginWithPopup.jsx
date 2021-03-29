@@ -3,11 +3,13 @@
 import React, { useContext } from "react";
 import { auth, provider } from "../firebase";
 import { AuthContext } from "../contextProviders/Auth";
+import { Redirect } from "react-router";
 
 const LoginWithPopup = () => {
-	const { setCurrentUser } = useContext(AuthContext);
+	const { currentUser, setCurrentUser } = useContext(AuthContext);
 
-	const signIn = () => {
+	const signIn = (e) => {
+		e.preventDefault();
 		auth
 			.signInWithPopup(provider)
 			.then((result) => {
@@ -17,6 +19,11 @@ const LoginWithPopup = () => {
 			})
 			.catch((error) => alert(error.message));
 	};
+
+	if (currentUser) {
+		return <Redirect to="/" />;
+	}
+
 	return (
 		<div className=" w-full h-screen flex justify-center items-center">
 			<button

@@ -19,7 +19,7 @@ const Posts = () => {
 	}, []);
 
 	return (
-		<div className="h-full w-full mt-4 border border-gray-800 rounded overflow-y-scroll scrollbar-hide">
+		<div className=" relative h-full lg:w-full md:w-11/12 lg:mt-4 md:mt-16 border border-gray-800 rounded overflow-y-scroll scrollbar-hide">
 			{postsData.map((post) => (
 				<Post
 					key={post.id}

@@ -8,7 +8,7 @@ import LoginWithPopup from "./components/LoginWithPopup";
 function App() {
 	return (
 		<Router>
-			<div className=" flex justify-center">
+			<div className=" flex justify-center md:w-screen">
 				<PrivateRoute exact path="/" component={Home} />
 				<Route exact path="/login" component={LoginWithPopup} />
 			</div>
