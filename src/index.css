@@ -1,15 +1,25 @@
+:root {
+	@apply dark;
+}
+
+.dark {
+	--color-bg-primary: #000000;
+	--color-bg-secondary: #283141;
+	--color-text-primary: #f7fafc;
+	--color-text-secondary: #e2e8f0;
+	--color-text-accent: #81e6d9;
+	--color-border-primary: #f6f8f8;
+}
+
+.light {
+	--color-bg-primary: #ffffff;
+	--color-bg-secondary: #edf2f7;
+	--color-text-primary: #2d3748;
+	--color-text-secondary: #4a5568;
+	--color-text-accent: #2b6cb0;
+	--color-border-primary: #aaa9a9;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.theme-dark {
-	@apply bg-black;
-	@apply text-gray-100;
-	@apply h-screen;
-}
-
-.theme-light {
-	@apply bg-gray-100;
-	@apply text-gray-800;
-	@apply h-screen;
-}

@@ -9,14 +9,16 @@ import { StorageContext } from "../../contextProviders/ModalProvider";
 import { AuthContext } from "../../contextProviders/Auth";
 import ElegentReactTooltip from "elegant-react-tooltip";
 import { MessageContext } from "../../contextProviders/MessageProvider";
+import FormData from "form-data";
+import axios from "../../axios";
 
 const SubmitForm = () => {
 	const [input, setInput] = useState("");
-	const [ImageURL, setImageURL] = useState(null);
+	const [ImageUrl, setImageUrl] = useState("");
 	const { currentUser } = useContext(AuthContext);
 	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
 
-	const { image, setImage } = useState();
+	const [image, setImage] = useState(null);
 
 	const hiddenFileInput = React.useRef(null);
 
@@ -25,15 +27,59 @@ const SubmitForm = () => {
 
 		setShowMessageForm(false);
 
-		db.collection("posts").add({
-			message: input,
-			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-			profilePic: currentUser.photoURL,
-			username: currentUser.displayName,
-			image: ImageURL,
-		});
+		// db.collection("posts").add({
+		// 	message: input,
+		// 	timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+		// 	profilePic: currentUser.photoURL,
+		// 	username: currentUser.displayName,
+		// 	image: ImageUrl,
+		// });
 
+		if (image) {
+			const imgForm = new FormData();
+			imgForm.append("file", image, image.name);
+
+			axios
+				.post("/upload/image", imgForm, {
+					header: {
+						accept: "application/json",
+						"Accept-language": "en-US,en;q=0.8",
+						"content-Type": `multipart/form-data; boundary=${imgForm._boundary}`,
+					},
+				})
+				.then((res) => {
+					console.log(res.data);
+
+					const postData = {
+						message: input,
+						imgName: res.data.filename,
+						user: currentUser.displayName,
+						avatar: currentUser.photoURL,
+						timestamp: Date.now(),
+					};
+					console.log(postData);
+					savePost(postData);
+				});
+		} else {
+			const postData = {
+				message: input,
+				user: currentUser.displayName,
+				avatar: currentUser.photoURL,
+				timestamp: Date.now(),
+			};
+			console.log(postData);
+			savePost(postData);
+		}
+
+		setImageUrl("");
 		setInput("");
+		setImage(null);
+	};
+
+	const savePost = async (postData) => {
+		await axios.post("/upload/post", postData).then((resp) => {
+			console.log(resp);
+		});
 	};
 
 	const handleClick = (e) => {
@@ -42,16 +88,20 @@ const SubmitForm = () => {
 	};
 
 	const handleFileChange = async (e) => {
-		const file = e.target.files[0];
-		const fileRef = storageRef.child(file.name);
-		await fileRef.put(file);
-		setImageURL(await fileRef.getDownloadURL());
+		e.preventDefault();
+		if (e.target.files[0]) {
+			setImage(e.target.files[0]);
+		}
+		// const file = e.target.files[0];
+		// const fileRef = storageRef.child(file.name);
+		// await fileRef.put(file);
+		// setImageURL(await fileRef.getDownloadURL());
 	};
 
 	return (
 		<>
-			<form onSubmit={handleSubmit}>
-				<div className="hidden border border-gray-700 h-auto lg:mt-20 md:mt-20 rounded-md w-full">
+			{/* <form onSubmit={handleSubmit}>
+				<div className="hidden lg:flex border border-primary h-auto lg:mt-20 md:mt-20 rounded-md w-full">
 					<img
 						className="object-cover rounded-full w-14 h-14 ml-4 mt-3"
 						src={currentUser.photoURL}
@@ -60,7 +110,7 @@ const SubmitForm = () => {
 					<div className="flex flex-col mt-7 pl-2 w-full relative">
 						<div>
 							<TextareaAutosize
-								className="pl-2 pr-2 w-full h-auto focus:outline-none resize-none bg-black pb-7"
+								className="pl-2 pr-2 w-96 h-auto focus:outline-none resize-none bg-primary pb-7"
 								autoFocus
 								autoComplete="true"
 								placeholder="what's on your mind?"
@@ -78,7 +128,7 @@ const SubmitForm = () => {
 							</button>
 
 							<input
-								className="invisible"
+								className="hidden"
 								type="file"
 								ref={hiddenFileInput}
 								onChange={handleFileChange}
@@ -92,27 +142,27 @@ const SubmitForm = () => {
 						</div>
 					</div>
 				</div>
-			</form>
+			</form> */}
 			{showMessageForm ? (
 				<>
-					<div className="justify-center items-center flex flex-col lg:hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+					<div className="justify-center items-center flex flex-col mx-4 lg:hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
 						<div
 							onClick={() => setShowMessageForm(false)}
-							className="text-3xl text-gray-300 mb-8"
+							className="text-3xl md:text-4xl text-gray-300 mb-8"
 						>
 							X
 						</div>
 						<form onSubmit={handleSubmit}>
-							<div className="hidden border border-gray-700 md:h-auto rounded-md md:flex pt-8 px-10 w-12/12 bg-gray-800">
+							<div className=" border border-gray-700 rounded-md flex pt-8 px-10 w-96 md:w-full bg-gray-800">
 								<img
-									className="object-cover rounded-full w-16 h-16 ml-10 mt-3"
+									className="object-cover rounded-full w-16 h-16 md:w-20 md:h-20 ml-2 md:ml-5 mt-3"
 									src={currentUser.photoURL}
 									alt=""
 								/>
 								<div className="flex flex-col mt-7 pl-2 w-full relative">
 									<div>
 										<TextareaAutosize
-											className="pl-2 md:text-lg w-96 bg-gray-800 h-auto focus:outline-none resize-none pb-7 mb-6"
+											className="pl-2 w-64 bg-gray-800 h-auto focus:outline-none resize-none pb-7 md:pb-4 mb-6 md:mb-4 md:mr-8 md:w-80 md:text-xl"
 											autoFocus
 											autoComplete="true"
 											placeholder="what's on your mind?"
@@ -122,13 +172,16 @@ const SubmitForm = () => {
 										/>
 									</div>
 
-									<div className="flex pl-2 mb-8 border-t pt-4">
+									<div className="flex items-center pl-2 mb-8 md:mb-4 border-t pt-4 md:pt-0">
 										<button
 											className="focus:outline-none mr-12"
 											onClick={handleClick}
 										>
 											<ElegentReactTooltip label="Upload media">
-												<GoFileMedia size={35} className="text-purple-500" />
+												<GoFileMedia
+													size={25}
+													className="text-purple-500 md:h-32"
+												/>
 											</ElegentReactTooltip>
 										</button>
 
@@ -139,10 +192,10 @@ const SubmitForm = () => {
 											onChange={handleFileChange}
 										/>
 										<button
-											className="rounded-3xl bg-purple-500 mr-8 md:px-2 tracking-wide text-gray-200"
+											className="rounded-3xl bg-purple-500 mr-8 md:px-2 px-3 py-1 md:py-2 tracking-wide text-gray-900 text-xs font-semibold md:font-bold focus:outline-none"
 											type="submit"
 										>
-											SEND
+											POST
 										</button>
 									</div>
 								</div>
