@@ -25,9 +25,12 @@ const LoginWithPopup = () => {
 	}
 
 	return (
-		<div className=" w-full h-screen flex justify-center items-center">
+		<div className=" w-full h-screen flex flex-col space-y-16 lg:space-y-32 justify-center items-center">
+			<h2 className="font-bold md:text-3xl lg:text-4xl">
+				Login to socialhangout
+			</h2>
 			<button
-				className="border rounded shadow-md text-gray-800 w-6/12 h-14 flex items-center justify-center"
+				className="border rounded shadow-md text-gray-800 w-5/6 lg:w-6/12 h-14 flex items-center justify-center"
 				type="submit"
 				onClick={signIn}
 			>
@@ -57,7 +60,7 @@ const LoginWithPopup = () => {
 						/>
 					</svg>
 				</span>
-				Login with <span className="ml-1 font-bold text-gray-800">Google</span>
+				SignIn with <span className="ml-1 font-bold text-gray-800">Google</span>
 			</button>
 		</div>
 	);
