@@ -27,14 +27,6 @@ const SubmitForm = () => {
 
 		setShowMessageForm(false);
 
-		// db.collection("posts").add({
-		// 	message: input,
-		// 	timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-		// 	profilePic: currentUser.photoURL,
-		// 	username: currentUser.displayName,
-		// 	image: ImageUrl,
-		// });
-
 		if (image) {
 			const imgForm = new FormData();
 			imgForm.append("file", image, image.name);
@@ -92,25 +84,21 @@ const SubmitForm = () => {
 		if (e.target.files[0]) {
 			setImage(e.target.files[0]);
 		}
-		// const file = e.target.files[0];
-		// const fileRef = storageRef.child(file.name);
-		// await fileRef.put(file);
-		// setImageURL(await fileRef.getDownloadURL());
 	};
 
 	return (
 		<>
-			{/* <form onSubmit={handleSubmit}>
-				<div className="hidden lg:flex border border-primary h-auto lg:mt-20 md:mt-20 rounded-md w-full">
+			<form onSubmit={handleSubmit}>
+				<div className="hidden lg:flex justify-center absolute border-t mr-2 border-primary bg-primary h-auto z-50 w-full bottom-0 left-0 pb-8">
 					<img
-						className="object-cover rounded-full w-14 h-14 ml-4 mt-3"
+						className="object-cover rounded-full w-16 h-16 ml-32 mt-3"
 						src={currentUser.photoURL}
 						alt=""
 					/>
-					<div className="flex flex-col mt-7 pl-2 w-full relative">
-						<div>
+					<div className="flex flex-col mt-5 pl-2 w-8/12 relative">
+						<div className="mb-4 border-b border-primary mr-4">
 							<TextareaAutosize
-								className="pl-2 pr-2 w-96 h-auto focus:outline-none resize-none bg-primary pb-7"
+								className="pl-2 pr-2 w-11/12 h-auto text-xl focus:outline-none resize-none bg-primary pb-7 scrollbar-hide"
 								autoFocus
 								autoComplete="true"
 								placeholder="what's on your mind?"
@@ -120,10 +108,10 @@ const SubmitForm = () => {
 							/>
 						</div>
 
-						<div className="flex pl-2 justify-between mb-4 h-auto">
-							<button className="focus:outline-none" onClick={handleClick}>
+						<div className="flex pl-2 h-auto">
+							<button className="focus:outline-none mr-4" onClick={handleClick}>
 								<ElegentReactTooltip label="Upload media">
-									<GoFileMedia size={25} className="text-purple-500" />
+									<GoFileMedia size={30} className="text-purple-800" />
 								</ElegentReactTooltip>
 							</button>
 
@@ -134,7 +122,7 @@ const SubmitForm = () => {
 								onChange={handleFileChange}
 							/>
 							<button
-								className="rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200"
+								className="focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200"
 								type="submit"
 							>
 								POST
@@ -142,10 +130,10 @@ const SubmitForm = () => {
 						</div>
 					</div>
 				</div>
-			</form> */}
+			</form>
 			{showMessageForm ? (
 				<>
-					<div className="justify-center items-center flex flex-col mx-4 lg:hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+					<div className="justify-center items-center flex flex-col mx-4 overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
 						<div
 							onClick={() => setShowMessageForm(false)}
 							className="text-3xl md:text-4xl text-gray-300 mb-8"

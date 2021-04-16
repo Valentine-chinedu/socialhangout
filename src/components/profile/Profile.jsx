@@ -12,8 +12,8 @@ const Profile = () => {
 			<div className="hidden lg:flex flex-col relative mt-20">
 				<div className="mb-4">
 					<div className=" flex justify-start items-end relative h-36 w-80 bg-blue-600 rounded-t"></div>
-					<div className=" flex flex-col justify-center items-center relative h-36 w-80 bg-gray-100 rounded-b">
-						<h3 className="text-gray-700 lg:mt-4 md:mt-8 mb-2 font-bold">
+					<div className=" flex flex-col justify-center items-center relative h-36 w-80 bg-secondary rounded-b">
+						<h3 className="text-primary lg:mt-4 md:mt-8 mb-2 font-bold">
 							{currentUser.displayName}
 						</h3>
 					</div>

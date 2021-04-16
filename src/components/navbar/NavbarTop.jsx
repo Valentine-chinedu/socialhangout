@@ -10,29 +10,29 @@ const NavbarTop = () => {
 	const { setShowSideBar } = useContext(SideBarContext);
 
 	return (
-		<div className="fixed border-b border-primary md:absolute w-full z-50 h-14 flex justify-around items-center">
-			<div className="relative hidden lg:flex items-center ml-6">
+		<div className="fixed border-b border-primary bg-primary md:absolute w-full z-40 h-14 lg:h-16 flex justify-around items-center">
+			<div className="relative hidden lg:flex items-center ml-8">
 				<img className="h-48" src="/logo.png" alt="logo" />
 			</div>
 			<button onClick={() => setShowSideBar(true)} className="lg:hidden">
 				<FaBars size={23} />
 			</button>
-			<div className="flex items-center border-b border-pr h-10 md:w-64 lg:w-96 w-56">
-				<form className="flex ">
+			<div className="flex items-center h-10 md:w-64 lg:w-96 w-60">
+				<form className="flex border-b border-primary pb-2">
 					<button type="submit">
-						<GoSearch size={16} className="mr-2" />
+						<GoSearch className="mr-2 lg:mr-3 lg:text-2xl" />
 					</button>
 					<input
-						className=" w-40 md:w-80 bg-primary text-sm tracking-wider focus:outline-none"
+						className=" w-60 md:w-80 lg:w-96 lg:h-10 lg:text-lg bg-primary text-sm tracking-wider focus:outline-none"
 						type="text"
-						placeholder="search location,users or posts..."
+						placeholder="search..."
 					/>
 				</form>
 			</div>
-			<div className="md:flex items-center hidden ">
-				<RiUserFill size={20} className="mr-2 text-purple-500" />
+			<div className="lg:flex items-center hidden ">
+				<RiUserFill className="mr-2 text-purple-500 text-3xl" />
 				<button
-					className="text-sm font-semibold text-secondary transform ease-out duration-200 hover:scale-110"
+					className="text-sm lg:text-base font-semibold text-secondary transform ease-in-out duration-300 hover:scale-110"
 					onClick={() => auth.signOut()}
 				>
 					Sign out
@@ -41,12 +41,12 @@ const NavbarTop = () => {
 			<div className="flex items-center text-purple-700 md:mt-2 mt-3 lg:mt-0">
 				<ElegentReactTooltip label="messages">
 					<button className="mr-8 hidden md:flex">
-						<RiMessage2Fill size={25} className="hover:text-purple-500 " />
+						<RiMessage2Fill className="hover:text-purple-500 md:text-2xl lg:text-3xl" />
 					</button>
 				</ElegentReactTooltip>
 				<ElegentReactTooltip label="Notification">
-					<button>
-						<FaBell size={20} className="hover:text-purple-500 h-24 md:mt-1" />
+					<button className="focus:outline-none">
+						<FaBell className="hover:text-purple-500 md:mt-1 md:text-2xl lg:text-2xl " />
 					</button>
 				</ElegentReactTooltip>
 			</div>

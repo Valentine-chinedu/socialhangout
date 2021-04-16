@@ -1,8 +1,13 @@
 import axios from "../../axios";
 import React, { useEffect, useState } from "react";
 import Post from "./post/Post";
+import Pusher from "pusher-js";
 
 // import db from "../../firebase";
+
+const pusher = new Pusher("20e72a05f26b987781c2", {
+	cluster: "us3",
+});
 
 const Posts = () => {
 	// eslint-disable-next-line no-unused-vars
@@ -27,13 +32,20 @@ const Posts = () => {
 	};
 
 	useEffect(() => {
+		const channel = pusher.subscribe("posts");
+		channel.bind("inserted", function (data) {
+			syncFeed();
+		});
+	}, []);
+
+	useEffect(() => {
 		syncFeed();
 	}, []);
 
 	console.log(postsData);
 
 	return (
-		<div className="h-full w-full lg:mt-4 md:mt-16 pt-8 lg:pt-0 rounded">
+		<div className="h-full z-50 w-full mt-4 lg:mt-4 md:mt-8 pt-8 lg:pt-10">
 			{postsData.map((post) => (
 				<Post
 					key={post.id}
