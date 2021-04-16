@@ -19,7 +19,7 @@ const NavbarTop = () => {
 			</button>
 			<div className="flex items-center h-10 md:w-64 lg:w-96 w-60">
 				<form className="flex border-b border-primary pb-2">
-					<button type="submit">
+					<button type="submit" className="focus:outline-none">
 						<GoSearch className="mr-2 lg:mr-3 lg:text-2xl" />
 					</button>
 					<input
