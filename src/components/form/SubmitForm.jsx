@@ -5,20 +5,18 @@ import TextareaAutosize from "react-textarea-autosize";
 import firebase from "firebase";
 import db from "../../firebase";
 import { storageRef } from "../../firebase";
-import { StorageContext } from "../../contextProviders/ModalProvider";
 import { AuthContext } from "../../contextProviders/Auth";
 import ElegentReactTooltip from "elegant-react-tooltip";
 import { MessageContext } from "../../contextProviders/MessageProvider";
-import FormData from "form-data";
-import axios from "../../axios";
+// import FormData from "form-data";
+// import axios from "../../axios";
 
 const SubmitForm = () => {
 	const [input, setInput] = useState("");
-	const [ImageUrl, setImageUrl] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
+	const [previewUrl, setPreviewUrl] = useState(null);
 	const { currentUser } = useContext(AuthContext);
 	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
-
-	const [image, setImage] = useState(null);
 
 	const hiddenFileInput = React.useRef(null);
 
@@ -27,52 +25,23 @@ const SubmitForm = () => {
 
 		setShowMessageForm(false);
 
-		if (image) {
-			const imgForm = new FormData();
-			imgForm.append("file", image, image.name);
-
-			axios
-				.post("/upload/image", imgForm, {
-					header: {
-						accept: "application/json",
-						"Accept-language": "en-US,en;q=0.8",
-						"content-Type": `multipart/form-data; boundary=${imgForm._boundary}`,
-					},
-				})
-				.then((res) => {
-					console.log(res.data);
-
-					const postData = {
-						message: input,
-						imgName: res.data.filename,
-						user: currentUser.displayName,
-						avatar: currentUser.photoURL,
-						timestamp: Date.now(),
-					};
-					console.log(postData);
-					savePost(postData);
-				});
-		} else {
-			const postData = {
-				message: input,
-				user: currentUser.displayName,
-				avatar: currentUser.photoURL,
-				timestamp: Date.now(),
-			};
-			console.log(postData);
-			savePost(postData);
-		}
+		db.collection("posts").add({
+			message: input,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+			profilePic: currentUser.photoURL,
+			username: currentUser.displayName,
+			image: imageUrl,
+		});
 
 		setImageUrl("");
 		setInput("");
-		setImage(null);
 	};
 
-	const savePost = async (postData) => {
-		await axios.post("/upload/post", postData).then((resp) => {
-			console.log(resp);
-		});
-	};
+	// const savePost = async (postData) => {
+	// 	await axios.post("/upload/post", postData).then((resp) => {
+	// 		console.log(resp);
+	// 	});
+	// };
 
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -81,10 +50,13 @@ const SubmitForm = () => {
 
 	const handleFileChange = async (e) => {
 		e.preventDefault();
-		if (e.target.files[0]) {
-			setImage(e.target.files[0]);
-		}
+		const file = e.target.files[0];
+		const fileRef = storageRef.child(file.name);
+		await fileRef.put(file);
+		setImageUrl(await fileRef.getDownloadURL());
 	};
+
+	console.log(imageUrl);
 
 	return (
 		<>
@@ -122,8 +94,11 @@ const SubmitForm = () => {
 								onChange={handleFileChange}
 							/>
 							<button
-								className="focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200"
+								className={`focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200 ${
+									!imageUrl && !input ? "disabled:opacity-50" : ""
+								}`}
 								type="submit"
+								disabled={!imageUrl && !input}
 							>
 								POST
 							</button>
@@ -180,8 +155,11 @@ const SubmitForm = () => {
 											onChange={handleFileChange}
 										/>
 										<button
-											className="rounded-3xl bg-purple-500 mr-8 md:px-2 px-3 py-1 md:py-2 tracking-wide text-gray-900 text-xs font-semibold md:font-bold focus:outline-none"
+											className={`focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200 ${
+												!imageUrl && !input ? "disabled:opacity-50" : ""
+											}`}
 											type="submit"
+											disabled={!imageUrl && !input}
 										>
 											POST
 										</button>
