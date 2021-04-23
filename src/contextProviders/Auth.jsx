@@ -5,12 +5,12 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
-	// eslint-disable-next-line no-unused-vars
 	const [pending, setPending] = useState(true);
 
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
+			setPending(false);
 		});
 	}, []);
 

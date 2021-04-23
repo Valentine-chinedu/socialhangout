@@ -10,6 +10,7 @@ module.exports = {
 		"./src/components/posts/Posts.jsx",
 		"./src/components/profile/Profile.jsx",
 		"./src/components/LoginWithPopup.jsx",
+		"./src/contextProviders/Auth.jsx",
 		"./src/App.js",
 	],
 	darkMode: false, // or 'media' or 'class'
