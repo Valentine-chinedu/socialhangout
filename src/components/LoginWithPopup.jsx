@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useContext } from "react";
 import { auth, provider } from "../firebase";
 import { AuthContext } from "../contextProviders/Auth";
