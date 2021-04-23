@@ -1,5 +1,17 @@
 module.exports = {
-	purge: [],
+	purge: [
+		"./src/components/feed/Feed.jsx",
+		"./src/components/form/MessageForm.jsx",
+		"./src/components/navbar/NavbarTop.jsx",
+		"./src/components/navbar/SideBar.jsx",
+		"./src/components/layout/Layout.jsx",
+		"./src/components/posts/post/Post.jsx",
+		"./src/components/posts/post/PostButton.jsx",
+		"./src/components/posts/Posts.jsx",
+		"./src/components/profile/Profile.jsx",
+		"./src/components/LoginWithPopup.jsx",
+		"./src/App.js",
+	],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
 		extend: {

@@ -8,13 +8,11 @@ import { storageRef } from "../../firebase";
 import { AuthContext } from "../../contextProviders/Auth";
 import ElegentReactTooltip from "elegant-react-tooltip";
 import { MessageContext } from "../../contextProviders/MessageProvider";
-// import FormData from "form-data";
-// import axios from "../../axios";
 
 const SubmitForm = () => {
 	const [input, setInput] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
-	const [previewUrl, setPreviewUrl] = useState(null);
+	const [imagePreview, setImagePreview] = useState(null);
 	const { currentUser } = useContext(AuthContext);
 	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
 
@@ -54,9 +52,8 @@ const SubmitForm = () => {
 		const fileRef = storageRef.child(file.name);
 		await fileRef.put(file);
 		setImageUrl(await fileRef.getDownloadURL());
+		setImagePreview(await fileRef.getDownloadURL());
 	};
-
-	console.log(imageUrl);
 
 	return (
 		<>
@@ -70,7 +67,7 @@ const SubmitForm = () => {
 					<div className="flex flex-col mt-5 pl-2 w-8/12 relative">
 						<div className="mb-4 border-b border-primary mr-4">
 							<TextareaAutosize
-								className="pl-2 pr-2 w-11/12 h-auto text-xl focus:outline-none resize-none bg-primary pb-7 scrollbar-hide"
+								className="pl-2 pr-2 w-11/12 h-auto text-xl focus:outline-none resize-none bg-primary pb-7 scrollbar-hide lg:mb-2"
 								autoFocus
 								autoComplete="true"
 								placeholder="what's on your mind?"
@@ -78,12 +75,29 @@ const SubmitForm = () => {
 								value={input}
 								onChange={(e) => setInput(e.target.value)}
 							/>
+							<div
+								className={`relative ${imagePreview === null ? "hidden" : ""}`}
+							>
+								<div
+									onClick={() => setImagePreview(null)}
+									className="text-xl text-gray-300 mb-2 absolute lg:left-36 lg:bottom-14 cursor-pointer"
+								>
+									X
+								</div>
+								<img
+									className={`h-16 w-32 mb-2 ml-2 ${
+										imagePreview === null ? "hidden" : ""
+									}`}
+									src={imagePreview}
+									alt=""
+								/>
+							</div>
 						</div>
 
 						<div className="flex pl-2 h-auto">
 							<button className="focus:outline-none mr-4" onClick={handleClick}>
 								<ElegentReactTooltip label="Upload media">
-									<GoFileMedia size={30} className="text-purple-800" />
+									<GoFileMedia size={30} className="text-purple-700" />
 								</ElegentReactTooltip>
 							</button>
 
@@ -97,6 +111,7 @@ const SubmitForm = () => {
 								className={`focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200 ${
 									!imageUrl && !input ? "disabled:opacity-50" : ""
 								}`}
+								onClick={() => setImagePreview(null)}
 								type="submit"
 								disabled={!imageUrl && !input}
 							>
@@ -116,7 +131,7 @@ const SubmitForm = () => {
 							X
 						</div>
 						<form onSubmit={handleSubmit}>
-							<div className=" border border-gray-700 rounded-md flex pt-8 px-10 w-96 md:w-full bg-gray-800">
+							<div className="rounded-md flex pt-8 px-10 w-96 md:w-full md:h-80 md:pt-20 bg-gray-800">
 								<img
 									className="object-cover rounded-full w-16 h-16 md:w-20 md:h-20 ml-2 md:ml-5 mt-3"
 									src={currentUser.photoURL}
@@ -134,18 +149,33 @@ const SubmitForm = () => {
 											onChange={(e) => setInput(e.target.value)}
 										/>
 									</div>
+									<div
+										className={`relative ${
+											imagePreview === null ? "hidden" : ""
+										}`}
+									>
+										<div
+											onClick={() => setImagePreview(null)}
+											className="text-xs md:text-lg text-gray-300 mb-2 absolute right-32 bottom-16 md:right-56 md:bottom-14 cursor-pointer"
+										>
+											X
+										</div>
+										<img
+											className="object-fill h-16 w-24 mb-2 ml-2"
+											src={imagePreview}
+											alt=""
+										/>
+									</div>
 
 									<div className="flex items-center pl-2 mb-8 md:mb-4 border-t pt-4 md:pt-0">
 										<button
 											className="focus:outline-none mr-12"
 											onClick={handleClick}
 										>
-											<ElegentReactTooltip label="Upload media">
-												<GoFileMedia
-													size={25}
-													className="text-purple-500 md:h-32"
-												/>
-											</ElegentReactTooltip>
+											<GoFileMedia
+												size={25}
+												className="text-purple-500 md:h-32"
+											/>
 										</button>
 
 										<input
@@ -168,6 +198,7 @@ const SubmitForm = () => {
 							</div>
 						</form>
 					</div>
+					{/* empty div to give the modal a dark background */}
 					<div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
 				</>
 			) : null}

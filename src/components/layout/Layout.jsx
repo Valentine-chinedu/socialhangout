@@ -1,18 +1,18 @@
 import React from "react";
 
 import Profile from "../profile/Profile";
-import Navbar from "../navbar/Navbar";
+import SideBar from "../navbar/SideBar";
 import NavbarTop from "../navbar/NavbarTop";
 
-import Home from "../home/Home";
+import Feed from "../feed/Feed";
 import PostButton from "../posts/post/PostButton";
 
 const Layout = () => {
 	return (
 		<div className="h-screen bg-primary text-primary relative md:flex justify-center w-full overflow-scroll md:overflow-hidden scrollbar-hide">
 			<NavbarTop />
-			<Navbar />
-			<Home />
+			<SideBar />
+			<Feed />
 			<Profile />
 			<PostButton />
 		</div>

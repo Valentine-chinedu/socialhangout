@@ -17,7 +17,7 @@ const Navbar = () => {
 		return theme === "light";
 	}
 
-	let classes = `flex flex-col h-full fixed overflow-x-hidden transition-width duration-700 ease-out left-0 top-0 lg:items-center bg-secondary lg:bg-primary lg:mt-16 lg:space-y-40 lg:mr-2 lg:z-40 z-50 lg:w-72 lg:overflow-visible lg:relative lg:transition-none ${
+	let classes = `flex flex-col h-full fixed overflow-x-hidden transition-width duration-700 ease-out left-0 top-0 lg:items-center bg-secondary lg:bg-primary lg:mt-20 lg:space-y-40 lg:mr-2 lg:z-40 z-50 lg:w-72 lg:overflow-visible lg:relative lg:transition-none ${
 		!showSideBar ? "w-0" : "w-80 md:w-4/5"
 	}`;
 

@@ -22,7 +22,7 @@ const Post = ({ avatar, image, username, timestamp, message }) => {
 							{new Date(timestamp?.toDate()).toUTCString()}
 						</p>
 					</div>
-					<div className="mr-2 mb-2 text-primary text-sm lg:text-lg">
+					<div className="mr-2 mb-2 text-primary text-sm lg:text-lg lg:mb-4">
 						<p className="md:text-lg">{message}</p>
 					</div>
 
