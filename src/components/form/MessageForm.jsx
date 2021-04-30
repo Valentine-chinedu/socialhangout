@@ -120,6 +120,7 @@ const SubmitForm = () => {
 						</div>
 					</div>
 				</div>
+				{/* message form for small and medium screen */}
 			</form>
 			{showMessageForm ? (
 				<>
@@ -140,7 +141,7 @@ const SubmitForm = () => {
 								<div className="flex flex-col mt-7 pl-2 w-full relative">
 									<div>
 										<TextareaAutosize
-											className="pl-2 w-64 bg-gray-800 h-auto focus:outline-none resize-none pb-7 md:pb-4 mb-6 md:mb-4 md:mr-8 md:w-80 md:text-xl"
+											className="pl-2 w-64 bg-gray-800 text-gray-300 h-auto focus:outline-none resize-none pb-7 md:pb-4 mb-6 md:mb-4 md:mr-8 md:w-80 md:text-xl"
 											autoFocus
 											autoComplete="true"
 											placeholder="what's on your mind?"

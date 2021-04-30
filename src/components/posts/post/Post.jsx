@@ -39,13 +39,13 @@ const Post = ({ avatar, image, username, timestamp, message }) => {
 					)}
 
 					<div className="flex justify-around mt-4 pr-4">
-						<button>
+						<button className="focus:outline-none">
 							<FaRegThumbsUp className="lg:text-2xl text-secondary hover:text-purple-700" />
 						</button>
-						<button>
+						<button className="focus:outline-none">
 							<FaRegCommentAlt className="lg:text-2xl text-secondary hover:text-purple-700" />
 						</button>
-						<button>
+						<button className="focus:outline-none">
 							<FiShare2 className="lg:text-2xl text-secondary hover:text-purple-700" />
 						</button>
 					</div>
