@@ -14,7 +14,10 @@ const NavbarTop = () => {
 			<div className="relative hidden lg:flex items-center ml-8">
 				<img className="h-48" src="/logo.png" alt="logo" />
 			</div>
-			<button onClick={() => setShowSideBar(true)} className="lg:hidden">
+			<button
+				onClick={() => setShowSideBar(true)}
+				className="lg:hidden focus:outline-none"
+			>
 				<FaBars size={23} />
 			</button>
 			<div className="flex items-center h-10 md:w-64 lg:w-96 w-60">
