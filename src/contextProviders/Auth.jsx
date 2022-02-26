@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { auth } from "../firebase.js";
+import React, { useEffect, useState } from 'react';
+import { auth } from '../firebase.js';
 
 export const AuthContext = React.createContext();
 
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
 	if (pending) {
 		return (
-			<div className="w-full h-screen flex justify-center items-center">
+			<div className='w-full h-screen flex justify-center items-center'>
 				Loading...
 			</div>
 		);
