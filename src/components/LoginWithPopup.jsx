@@ -28,7 +28,7 @@ const LoginWithPopup = () => {
 				Login to socialhangout
 			</h2>
 			<button
-				className='border rounded shadow-md text-gray-800 w-5/6 lg:w-6/12 h-14 flex items-center justify-center'
+				className='border rounded shadow-lg w-5/6 lg:w-6/12 h-14 flex items-center justify-center bg-blue-600 hover:scale-105 transition-all duration-500 text-gray-50'
 				type='submit'
 				onClick={signIn}
 			>
@@ -58,7 +58,8 @@ const LoginWithPopup = () => {
 						/>
 					</svg>
 				</span>
-				SignIn with <span className='ml-1 font-bold text-gray-800'>Google</span>
+				SignIn with
+				<span className='ml-1 font-bold text-gray-50'>Google</span>
 			</button>
 		</div>
 	);
