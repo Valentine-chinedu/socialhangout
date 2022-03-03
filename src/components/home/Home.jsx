@@ -1,13 +1,14 @@
 import React from 'react';
 import Feed from '../feed/Feed';
-
-import Profile from '../profile/Profile';
+import SideBarLeft from '../navbar/SideBarLeft';
+import SideBarRight from '../navbar/SideBarRight';
 
 const Home = () => {
 	return (
-		<div className='flex'>
+		<div className='flex justify-evenly w-full'>
+			<SideBarLeft />
 			<Feed />
-			<Profile />
+			<SideBarRight />
 		</div>
 	);
 };

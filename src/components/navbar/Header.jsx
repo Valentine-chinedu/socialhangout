@@ -1,16 +1,6 @@
-import React, { useContext } from 'react';
-import { GoSearch } from 'react-icons/go';
-import { RiMessage2Fill, RiUserFill } from 'react-icons/ri';
-import { FaBars, FaBell } from 'react-icons/fa';
-import { auth } from '../../firebase';
-import ElegentReactTooltip from 'elegant-react-tooltip';
-import { SideBarContext } from '../../contextProviders/SideBarProvider';
-
 const Header = () => {
-	const { setShowSideBar } = useContext(SideBarContext);
-
 	return (
-		<div className='fixed md:absolute lg:fixed w-full z-40 h-14 lg:h-12 lg:w-[31.8%] flex justify-between items-center px-3 bg-white backdrop-filter backdrop-blur bg-opacity-75'>
+		<div className='fixed md:absolute lg:fixed w-full z-40 h-14 lg:h-12 lg:w-[34.1%] flex justify-between items-center px-3 bg-white backdrop-filter backdrop-blur bg-opacity-75'>
 			<h2 className='font-bold text-lg'>Home</h2>
 			<svg viewBox='0 0 24 24' aria-hidden='true' className='h-[1.1rem]'>
 				<g>
