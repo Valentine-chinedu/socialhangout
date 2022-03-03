@@ -13,4 +13,5 @@ module.exports = {
 			opacity: ['disabled'],
 		},
 	},
+	plugins: [require('tailwind-scrollbar-hide')],
 };
