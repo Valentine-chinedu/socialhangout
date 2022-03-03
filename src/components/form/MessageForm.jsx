@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
-import { GoFileMedia } from 'react-icons/go';
 import TextareaAutosize from 'react-textarea-autosize';
 import firebase from 'firebase';
 import db from '../../firebase';
@@ -8,6 +7,7 @@ import { storageRef } from '../../firebase';
 import { AuthContext } from '../../contextProviders/Auth';
 import ElegentReactTooltip from 'elegant-react-tooltip';
 import { MessageContext } from '../../contextProviders/MessageProvider';
+import TweetModal from './TweetModal';
 
 const SubmitForm = () => {
 	const [input, setInput] = useState('');
@@ -15,6 +15,8 @@ const SubmitForm = () => {
 	const [imagePreview, setImagePreview] = useState(null);
 	const { currentUser } = useContext(AuthContext);
 	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
+
+	const { photoURL } = currentUser;
 
 	const hiddenFileInput = React.useRef(null);
 
@@ -34,12 +36,6 @@ const SubmitForm = () => {
 		setImageUrl('');
 		setInput('');
 	};
-
-	// const savePost = async (postData) => {
-	// 	await axios.post("/upload/post", postData).then((resp) => {
-	// 		console.log(resp);
-	// 	});
-	// };
 
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -61,11 +57,12 @@ const SubmitForm = () => {
 				<div className='hidden mr-2 w-full lg:pt-11 border-b lg:flex pb-2'>
 					<img
 						className='object-cover rounded-full w-[2.4rem] h-10 ml-4 mt-3'
-						src={currentUser.photoURL}
-						alt=''
+						src={photoURL ? photoURL : './blank-profile-picture.png'}
+						alt='avatar'
+						loading='lazy'
 					/>
 					<div className='flex flex-col mt-5 pl-1 w-full relative'>
-						<div className='mb-2 border-b border-primary mr-4 pb-4'>
+						<div className='mb-2 mr-4 pb-'>
 							<TextareaAutosize
 								className='pl-2 w-full h-auto text-lg text-gray-700 placeholder:text-gray-600 placeholder:text-lg focus:outline-none resize-none lg:mb-2'
 								autoFocus
@@ -234,87 +231,20 @@ const SubmitForm = () => {
 				</div>
 				{/* message form for small and medium screen */}
 			</form>
-			{showMessageForm ? (
-				<>
-					<div className='justify-center items-center flex flex-col mx-4 overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
-						<div
-							onClick={() => setShowMessageForm(false)}
-							className='text-3xl md:text-4xl text-gray-300 mb-8'
-						>
-							X
-						</div>
-						<form onSubmit={handleSubmit}>
-							<div className='rounded-md flex pt-8 px-10 w-96 md:w-full md:h-80 md:pt-20 bg-gray-800'>
-								<img
-									className='object-cover rounded-full w-16 h-16 md:w-20 md:h-20 ml-2 md:ml-5 mt-3'
-									src={currentUser.photoURL}
-									alt=''
-								/>
-								<div className='flex flex-col mt-7 pl-2 w-full relative'>
-									<div>
-										<TextareaAutosize
-											className='pl-2 w-64 bg-gray-800 text-gray-300 h-auto focus:outline-none resize-none pb-7 md:pb-4 mb-6 md:mb-4 md:mr-8 md:w-80 md:text-xl'
-											autoFocus
-											autoComplete='true'
-											placeholder="what's on your mind?"
-											name='creator'
-											value={input}
-											onChange={(e) => setInput(e.target.value)}
-										/>
-									</div>
-									<div
-										className={`relative ${
-											imagePreview === null ? 'hidden' : ''
-										}`}
-									>
-										<div
-											onClick={() => setImagePreview(null)}
-											className='text-xs md:text-lg text-gray-300 mb-2 absolute right-32 bottom-16 md:right-56 md:bottom-14 cursor-pointer'
-										>
-											X
-										</div>
-										<img
-											className='object-fill h-16 w-24 mb-2 ml-2'
-											src={imagePreview}
-											alt=''
-										/>
-									</div>
-
-									<div className='flex items-center pl-2 mb-8 md:mb-4 border-t pt-4 md:pt-0'>
-										<button
-											className='focus:outline-none mr-12'
-											onClick={handleClick}
-										>
-											<GoFileMedia
-												size={25}
-												className='text-purple-500 md:h-32'
-											/>
-										</button>
-
-										<input
-											className='hidden'
-											type='file'
-											ref={hiddenFileInput}
-											onChange={handleFileChange}
-										/>
-										<button
-											className={`focus:outline-none rounded-3xl bg-purple-800 mr-8 px-4 tracking-wide text-gray-200 ${
-												!imageUrl && !input ? 'disabled:opacity-50' : ''
-											}`}
-											type='submit'
-											disabled={!imageUrl && !input}
-										>
-											POST
-										</button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-					{/* empty div to give the modal a dark background */}
-					<div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
-				</>
-			) : null}
+			<TweetModal
+				showMessageForm={showMessageForm}
+				setShowMessageForm={setShowMessageForm}
+				handleSubmit={handleSubmit}
+				handleFileChange={handleFileChange}
+				handleClick={handleClick}
+				input={input}
+				setInput={setInput}
+				imagePreview={imagePreview}
+				setImagePreview={setImagePreview}
+				hiddenFileInput={hiddenFileInput}
+				imageUrl={imageUrl}
+				currentUser={currentUser}
+			/>
 		</>
 	);
 };

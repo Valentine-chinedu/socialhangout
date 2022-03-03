@@ -11,7 +11,7 @@ function Home() {
 	return (
 		<div
 			onClick={() => setShowSideBar(false)}
-			className='relative lg:mr-8  w-full lg:w-[50%] lg:border-r lg:border-l border-primary overflow-y-scroll scrollbar-hide'
+			className=' lg:w-full border-x  overflow-y-auto scrollbar-hide'
 		>
 			<Header />
 			<MessageForm />
