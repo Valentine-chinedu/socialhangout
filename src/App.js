@@ -1,20 +1,17 @@
-import React, { useContext } from 'react';
-
-import Layout from './components/layout/Layout';
-import PrivateRoute from './PrivateRoute';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Home from './components/home/Home';
 
 import LoginWithPopup from './components/LoginWithPopup';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
 
 function App() {
 	return (
-		<div className='flex'>
+		<div className=' w-screen h-screen'>
 			<Router>
-				<div className='relative flex justify-center md:w-screen'>
-					<PrivateRoute exact path='/' component={Layout} />
-					<Route exact path='/login' component={LoginWithPopup} />
-				</div>
+				<PrivateRoute exact path='/' component={Home} />
+				<Route exact path='/login' component={LoginWithPopup} />
 			</Router>
 		</div>
 	);

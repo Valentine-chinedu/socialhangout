@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../../contextProviders/Auth';
 
 const Post = ({ avatar, image, username, timestamp, message }) => {
+	const { useDemo } = useContext(AuthContext);
 	return (
 		<div className='flex h-auto justify-center items-start px-2 py-4 border-b hover:bg-gray-50 cursor-pointer'>
 			<div className='h-12 w-12'>
 				<img
 					className='rounded-full object-cover'
-					src={avatar ? avatar : './blank-profile-picture.png'}
-					alt=''
+					src={useDemo ? './blank-profile-picture.png' : avatar}
+					alt='avatar'
+					loading='lazy'
 				/>
 			</div>
 

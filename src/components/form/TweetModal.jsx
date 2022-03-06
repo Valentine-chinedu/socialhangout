@@ -1,33 +1,69 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import firebase from 'firebase';
+import db from '../../firebase';
+import { storageRef } from '../../firebase';
+import { AuthContext } from '../../contextProviders/Auth';
+import { MessageContext } from '../../contextProviders/MessageProvider';
 
-const TweetModal = ({
-	showMessageForm,
-	setShowMessageForm,
-	handleSubmit,
-	handleFileChange,
-	handleClick,
-	input,
-	setInput,
-	imagePreview,
-	setImagePreview,
-	hiddenFileInput,
-	imageUrl,
-	currentUser,
-}) => {
+const TweetModal = () => {
+	const [input, setInput] = useState('');
+	const [imageUrl, setImageUrl] = useState('');
+	const [imagePreview, setImagePreview] = useState(null);
+	const { currentUser, useDemo } = useContext(AuthContext);
+
+	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
+
+	const hiddenFileInput = React.useRef(null);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		setShowMessageForm(false);
+
+		db.collection('posts').add({
+			message: input,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+			profilePic: currentUser.photoURL,
+			username: currentUser.displayName,
+			image: imageUrl,
+		});
+
+		setImageUrl('');
+		setInput('');
+	};
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		hiddenFileInput.current.click();
+	};
+
+	const handleFileChange = async (e) => {
+		e.preventDefault();
+		const file = e.target.files[0];
+		const fileRef = storageRef.child(file.name);
+		await fileRef.put(file);
+		setImageUrl(await fileRef.getDownloadURL());
+		setImagePreview(await fileRef.getDownloadURL());
+	};
+
 	return (
-		<di>
+		<div>
 			{showMessageForm ? (
-				<div className=''>
+				<div className='w-full'>
 					<div className='flex flex-col items-start mr-2 fixed top-10 rounded-2xl w-[34.4%]  border-b z-50 bg-white pb-2'>
 						<div className='text-2xl text-gray-800 pl-4'>
 							<button onClick={() => setShowMessageForm(false)}>x</button>
 						</div>
-						<div className='w-full'>
+						<form className='w-full' onSubmit={handleSubmit}>
 							<div className='flex items-start mt-5 pl-1 w-full'>
 								<img
 									className='object-cover rounded-full w-[2.4rem] h-10 ml-4 '
-									src={currentUser.photoURL}
+									src={
+										!currentUser || useDemo
+											? './blank-profile-picture.png'
+											: currentUser.photoURL
+									}
 									alt=''
 								/>
 								<div className='mb-2 border-b border-primary mr-4 pb-4 pt-2 w-full'>
@@ -196,13 +232,13 @@ const TweetModal = ({
 									Tweet
 								</button>
 							</div>
-						</div>
+						</form>
 					</div>
 					{/* empty div to give the modal a dark background */}
 					<div className='opacity-25 fixed inset-0 z-40 bg-black'></div>
 				</div>
 			) : null}
-		</di>
+		</div>
 	);
 };
 

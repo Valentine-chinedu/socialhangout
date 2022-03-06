@@ -5,7 +5,6 @@ import firebase from 'firebase';
 import db from '../../firebase';
 import { storageRef } from '../../firebase';
 import { AuthContext } from '../../contextProviders/Auth';
-import ElegentReactTooltip from 'elegant-react-tooltip';
 import { MessageContext } from '../../contextProviders/MessageProvider';
 import TweetModal from './TweetModal';
 
@@ -13,10 +12,9 @@ const SubmitForm = () => {
 	const [input, setInput] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
 	const [imagePreview, setImagePreview] = useState(null);
-	const { currentUser } = useContext(AuthContext);
-	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
+	const { currentUser, useDemo } = useContext(AuthContext);
 
-	const { photoURL } = currentUser;
+	const { showMessageForm, setShowMessageForm } = useContext(MessageContext);
 
 	const hiddenFileInput = React.useRef(null);
 
@@ -57,7 +55,11 @@ const SubmitForm = () => {
 				<div className='hidden mr-2 w-full lg:pt-11 border-b lg:flex pb-2'>
 					<img
 						className='object-cover rounded-full w-[2.4rem] h-10 ml-4 mt-3'
-						src={photoURL ? photoURL : './blank-profile-picture.png'}
+						src={
+							currentUser === null || useDemo
+								? './blank-profile-picture.png'
+								: currentUser.photoURL
+						}
 						alt='avatar'
 						loading='lazy'
 					/>
@@ -113,17 +115,21 @@ const SubmitForm = () => {
 
 						<div className='flex pl-2  items-center justify-between'>
 							<div className='flex items-center space-x-3.5'>
-								<button className='focus:outline-none' onClick={handleClick}>
+								<button
+									className='focus:outline-none'
+									onClick={handleClick}
+									disabled={useDemo}
+								>
 									{/* <ElegentReactTooltip label='Upload media'> */}
 									<svg viewBox='0 0 24 24' aria-hidden='true' className='h-5'>
 										<g>
 											<title>Upload media</title>
 											<path
-												fill='#258bff'
+												fill={useDemo ? '#b4c7db' : '#258bff'}
 												d='M19.75 2H4.25C3.01 2 2 3.01 2 4.25v15.5C2 20.99 3.01 22 4.25 22h15.5c1.24 0 2.25-1.01 2.25-2.25V4.25C22 3.01 20.99 2 19.75 2zM4.25 3.5h15.5c.413 0 .75.337.75.75v9.676l-3.858-3.858c-.14-.14-.33-.22-.53-.22h-.003c-.2 0-.393.08-.532.224l-4.317 4.384-1.813-1.806c-.14-.14-.33-.22-.53-.22-.193-.03-.395.08-.535.227L3.5 17.642V4.25c0-.413.337-.75.75-.75zm-.744 16.28l5.418-5.534 6.282 6.254H4.25c-.402 0-.727-.322-.744-.72zm16.244.72h-2.42l-5.007-4.987 3.792-3.85 4.385 4.384v3.703c0 .413-.337.75-.75.75z'
 											></path>
 											<circle
-												fill='#258bff'
+												fill={useDemo ? '#b4c7db' : '#258bff'}
 												cx='8.868'
 												cy='8.309'
 												r='1.542'
@@ -218,33 +224,19 @@ const SubmitForm = () => {
 							</div>
 							<button
 								className={`focus:outline-none rounded-3xl bg-blue-500 mr-8 py-1.5 px-4 text-sm font-medium text-gray-50 ${
-									!imageUrl && !input ? 'disabled:opacity-50' : ''
-								}`}
+									(!imageUrl && !input) || useDemo ? 'disabled:opacity-50' : ''
+								} `}
 								onClick={() => setImagePreview(null)}
 								type='submit'
-								disabled={!imageUrl && !input}
+								disabled={(!imageUrl && !input) || useDemo}
 							>
 								Tweet
 							</button>
 						</div>
 					</div>
 				</div>
-				{/* message form for small and medium screen */}
 			</form>
-			<TweetModal
-				showMessageForm={showMessageForm}
-				setShowMessageForm={setShowMessageForm}
-				handleSubmit={handleSubmit}
-				handleFileChange={handleFileChange}
-				handleClick={handleClick}
-				input={input}
-				setInput={setInput}
-				imagePreview={imagePreview}
-				setImagePreview={setImagePreview}
-				hiddenFileInput={hiddenFileInput}
-				imageUrl={imageUrl}
-				currentUser={currentUser}
-			/>
+			<TweetModal />
 		</>
 	);
 };

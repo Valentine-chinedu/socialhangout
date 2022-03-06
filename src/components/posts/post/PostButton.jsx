@@ -1,18 +1,17 @@
 import React, { useContext } from 'react';
-import { GrAdd } from 'react-icons/gr';
+import { AuthContext } from '../../../contextProviders/Auth';
 import { MessageContext } from '../../../contextProviders/MessageProvider';
-import { SideBarContext } from '../../../contextProviders/SideBarProvider';
 
 const PostButton = () => {
 	const { setShowMessageForm } = useContext(MessageContext);
-	const { showSideBar } = useContext(SideBarContext);
+	const { useDemo } = useContext(AuthContext);
 
 	return (
 		<div className='lg:pr-12'>
 			<button
 				onClick={() => setShowMessageForm(true)}
-				className='font-bold text-sm w-48 rounded-full bg-blue-500 hidden lg:block text-white px-2 py-3.5  focus:outline-none'
-				disabled={showSideBar}
+				className='font-bold text-sm w-48 rounded-full bg-blue-500 disabled:bg-blue-300 hidden lg:block text-white px-2 py-3.5  focus:outline-none'
+				disabled={useDemo}
 			>
 				Tweet
 			</button>
