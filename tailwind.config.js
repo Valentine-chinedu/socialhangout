@@ -1,17 +1,8 @@
 module.exports = {
-	content: ['./src/**/*.{js,jsx,ts,tsx}'],
-
-	theme: {
-		extend: {
-			transitionProperty: {
-				width: 'width',
-			},
-		},
-	},
-	variants: {
-		extend: {
-			opacity: ['disabled'],
-		},
-	},
+	purge: ['./src/**/*.{js,jsx,ts,tsx}'],
+	mode: 'jit',
+	darkMode: false, // or 'media' or 'class'
+	theme: {},
+	variants: {},
 	plugins: [require('tailwind-scrollbar-hide')],
 };
