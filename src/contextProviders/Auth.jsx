@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { auth } from "../firebase.js";
+import React, { useEffect, useState } from 'react';
+
+import { auth } from '../firebase.js';
 
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
-	const [pending, setPending] = useState(true);
+	const [pending, setPending] = useState(null);
+
+	const [useDemo, setUseDemo] = useState(false);
 
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
@@ -16,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
 	if (pending) {
 		return (
-			<div className="w-full h-screen flex justify-center items-center">
+			<div className='w-full h-screen flex justify-center items-center'>
 				Loading...
 			</div>
 		);
@@ -27,6 +30,8 @@ export const AuthProvider = ({ children }) => {
 			value={{
 				currentUser,
 				setCurrentUser,
+				useDemo,
+				setUseDemo,
 			}}
 		>
 			{children}
