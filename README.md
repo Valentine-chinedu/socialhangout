@@ -19,7 +19,7 @@ The App has a demo access for view only and google user authentication for acces
 
 Login with email, tweet and view tweets and media uploads.
 
-## Live Site
+## View Application
 
 [Live App](https://socialhangout-f995d.web.app/)
 
